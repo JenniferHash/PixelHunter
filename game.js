@@ -3,6 +3,7 @@ const Phaser = require('phaser');
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
+        this.colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#e67e22', '#1abc9c', '#34495e'];
     }
 
     preload() {
@@ -13,11 +14,13 @@ class GameScene extends Phaser.Scene {
             </svg>
         `));
         
-        this.load.image('square', 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-                <rect width="50" height="50" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-            </svg>
-        `));
+        this.colors.forEach((color, index) => {
+            this.load.image(`square_${index}`, 'data:image/svg+xml;base64,' + btoa(`
+                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="50" fill="${color}" stroke="#000" stroke-width="2"/>
+                </svg>
+            `));
+        });
     }
 
     create() {
@@ -37,7 +40,8 @@ class GameScene extends Phaser.Scene {
         });
         instructionText.setOrigin(0.5, 0.5);
 
-        this.square = this.add.image(400, 300, 'square');
+        this.currentColorIndex = 0;
+        this.square = this.add.image(400, 300, `square_${this.currentColorIndex}`);
         this.square.setInteractive();
         
         this.square.on('pointerdown', () => {
@@ -56,6 +60,9 @@ class GameScene extends Phaser.Scene {
     moveSquare() {
         const newX = Phaser.Math.Between(50, 750);
         const newY = Phaser.Math.Between(50, 550);
+        
+        this.currentColorIndex = Phaser.Math.Between(0, this.colors.length - 1);
+        this.square.setTexture(`square_${this.currentColorIndex}`);
         
         this.tweens.add({
             targets: this.square,
