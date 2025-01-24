@@ -33,22 +33,32 @@ class GameScene extends Phaser.Scene {
         });
         welcomeText.setOrigin(0.5, 0.5);
 
-        const instructionText = this.add.text(400, 500, 'Click the moving square!', {
+        const instructionText = this.add.text(400, 500, 'Click the moving squares!', {
             fontSize: '18px',
             fill: '#ffffff',
             fontFamily: 'Arial'
         });
         instructionText.setOrigin(0.5, 0.5);
 
-        this.currentColorIndex = 0;
-        this.square = this.add.image(400, 300, `square_${this.currentColorIndex}`);
-        this.square.setInteractive();
+        this.currentColorIndex1 = 0;
+        this.currentColorIndex2 = 1;
         
-        this.square.on('pointerdown', () => {
-            console.log('Square clicked!');
+        this.square1 = this.add.image(300, 250, `square_${this.currentColorIndex1}`);
+        this.square1.setInteractive();
+        
+        this.square2 = this.add.image(500, 350, `square_${this.currentColorIndex2}`);
+        this.square2.setInteractive();
+        
+        this.square1.on('pointerdown', () => {
+            console.log('Square 1 clicked!');
+        });
+        
+        this.square2.on('pointerdown', () => {
+            console.log('Square 2 clicked!');
         });
 
-        this.moveSquare();
+        this.moveSquare(this.square1, 1);
+        this.moveSquare(this.square2, 2);
 
         console.log('Phaser game initialized successfully!');
     }
@@ -57,22 +67,22 @@ class GameScene extends Phaser.Scene {
         
     }
 
-    moveSquare() {
+    moveSquare(square, squareId) {
         const newX = Phaser.Math.Between(50, 750);
         const newY = Phaser.Math.Between(50, 550);
         
-        this.currentColorIndex = Phaser.Math.Between(0, this.colors.length - 1);
-        this.square.setTexture(`square_${this.currentColorIndex}`);
+        const colorIndex = Phaser.Math.Between(0, this.colors.length - 1);
+        square.setTexture(`square_${colorIndex}`);
         
         this.tweens.add({
-            targets: this.square,
+            targets: square,
             x: newX,
             y: newY,
             duration: Phaser.Math.Between(1000, 2000),
             ease: 'Power2',
             onComplete: () => {
                 this.time.delayedCall(Phaser.Math.Between(500, 1500), () => {
-                    this.moveSquare();
+                    this.moveSquare(square, squareId);
                 });
             }
         });
