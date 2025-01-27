@@ -43,6 +43,7 @@ class GameScene extends Phaser.Scene {
         instructionText.setOrigin(0.5, 0.5);
 
         this.player = this.add.image(400, 300, 'player');
+        this.player.setScale(0.3);
         
         this.currentColorIndex1 = 0;
         this.currentColorIndex2 = 1;
