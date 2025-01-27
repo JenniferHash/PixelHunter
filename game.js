@@ -22,14 +22,7 @@ class GameScene extends Phaser.Scene {
             `));
         });
         
-        this.load.image('player', 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-                <rect width="60" height="60" fill="#ffffff" stroke="#000" stroke-width="3"/>
-                <circle cx="20" cy="20" r="5" fill="#000"/>
-                <circle cx="40" cy="20" r="5" fill="#000"/>
-                <path d="M 15 40 Q 30 50 45 40" stroke="#000" stroke-width="2" fill="none"/>
-            </svg>
-        `));
+        this.load.image('player', 'bitcoin.png');
     }
 
     create() {
